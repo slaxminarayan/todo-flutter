@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../models/task_data.dart';
+class NewTodoView extends StatelessWidget {
+  final Function addTaskCallback;
 
-class AddTaskScreen extends StatelessWidget {
+  NewTodoView(this.addTaskCallback);
+
+  TextEditingController titleController;
+
   @override
   Widget build(BuildContext context) {
     String newTaskTitle;
 
     return Container(
-      color: Color(0xff757575),
+      color: const Color(0xff757575),
       child: Container(
-        padding: EdgeInsets.all(25.0),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.all(25.0),
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30),
@@ -22,7 +25,7 @@ class AddTaskScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text(
+            const Text(
               'Add Task',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -35,25 +38,30 @@ class AddTaskScreen extends StatelessWidget {
               autofocus: true,
               style: TextStyle(fontSize: 20),
               textAlign: TextAlign.center,
+              controller: titleController,
               onChanged: (newText) {
                 newTaskTitle = newText;
               },
+              decoration: InputDecoration(labelText: 'Task'),
             ),
-            // Padding(padding: EdgeInsets.all(5)),
-            FlatButton(
+            RaisedButton(
+              color: Colors.lightBlueAccent,
               child: Text(
                 'Add',
                 style: TextStyle(
                   color: Colors.white,
                 ),
               ),
-              color: Colors.lightBlueAccent,
               onPressed: () {
+                addTaskCallback(newTaskTitle);
                 Navigator.pop(context);
-                Provider.of<TaskData>(context, listen: false)
-                    .addTask(newTaskTitle);
               },
-            ),
+              elevation: 3.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10.0),
+                      topRight: Radius.circular(10.0))),
+            )
           ],
         ),
       ),
